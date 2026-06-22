@@ -1,0 +1,16 @@
+#winGame {
+  height: 50px;
+  width: 50px;
+  background-color: green;
+  /* position: absolute;
+  right: 0px;
+  bottom: 0px; */
+  /* float: right;  */
+  /* z-index: -100; */
+}
+
+.ui-state-highlight {
+
+  background-color: blue; 
+
+}

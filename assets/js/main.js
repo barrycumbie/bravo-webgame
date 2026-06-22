@@ -1,15 +1,31 @@
 // $(document).ready(
-$(()=>{ //super shorthand 
+$(() => { //super shorthand 
   //IIFE => immediately invoked function expression. 
   //arrow function 
-  
-    console.log('jq doc is ready'); 
 
-    $('#playerName').on('keyup', function () {
-      echoInput($(this).val(), 'greetPlayer')
+  console.log('jq doc is ready');
 
-    });    
+  $('#playerName').on('keyup', function () {
+    echoInput($(this).val(), 'greetPlayer')
+
   });
+
+  $(function () {
+    $("#gamePiece").draggable();
+    $("#winGame").droppable({
+      drop: function (event, ui) {
+        console.log('ready to drop'); 
+        $(this)
+          .css("background-color", "blue")
+          .addClass("ui-state-highlight")
+          .find("p")
+          .html("Dropped!");
+
+
+      }
+    });
+  });
+});
 
 
 // document.addEventListener('DOMContentLoaded', function() {
@@ -24,6 +40,6 @@ $(()=>{ //super shorthand
 //take input and put in somewhere on the DOM 
 function echoInput(input, targetId) {
   console.log('in greetPlayer f/n');
-  console.log(input); 
+  console.log(input);
   document.getElementById(targetId).textContent = `Hello ${input}!`;
 }
