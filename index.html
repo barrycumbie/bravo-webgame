@@ -19,27 +19,85 @@
 
 <body>
 
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-keyboard me-1 p-2 border rounded-circle"></i>
+        kbd s|cut game</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">concept</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">full game</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/drop.html">drop game</a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- 
+
+todo   user can enter their name & receive a greeting (guest mode too if no name)
+guests get a random name
+a score + leaderboard sections: see your scores and top scores
+any other user info? date/time, IP, broswer, ...?
+hardcode some in...use sessoinStorage...cheatMode() in console?
+a BS5 modal
+game play
+guest or username
+todo play: start, reset, (hint?)
+todo a clear ending: win, lose, score
+todo a footer/links to this game's REPO, your GitHub -->
+
   <div id="game" class="container min-vh-100 d-flex flex-column py-3">
-    <div class="row">
+    <div id="gameControls" class="row">
       <div class="col-md-10 offset-md-1">
         <h1>Welcome to my web game</h1>
         <label for="playerName">Enter your name</label>
         <input id="playerName">
         <p id="greetPlayer"></p>
+        <span id="gameScore">Score: ___</span>
       </div>
     </div>
-    <div class="row flex-grow-1">
-      <div class="col-md-10 offset-md mx-auto">
-        <div id="gameBoard" class="border rounded w-100 h-75">
-          
-          <div id="gamePiece" style="height:30px; width:30px">🍅</div>
-          
-          <div id="winGame" class="float-end"><p></p></div>
+    <div id="gameBoardRow" class="row flex-grow-1 border rounded">
+
+      <div class="col-sm-6">
+        <div id="gameChoices" class="w-100 h-75">
+
+          <button id="choiceBtn" class="btn btn-secondary">
+            <kbd>option + shift + f</kbd>
+          </button>
+
         </div>
+      </div>
+      <div class="col-sm-6">
+        <div id="gameAnswers" class="w-100 h-75">
 
+          <button id="answerBtn" class="btn btn-secondary">
+            vsCode: format code
+          </button> 
+
+
+        </div>
       </div>
 
+
     </div>
+  </div>
+
+  </div>
+
+  </div>
   </div>
 
   <!-- Bootstrap JS Bundle -->

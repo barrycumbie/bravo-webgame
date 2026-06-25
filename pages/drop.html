@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>web game!</title>
+
+  <!-- Normalize -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+
+<body>
+
+  <!-- todo: 
+   a title/top nav bar with an icon
+nav between "concept" and "full game" mode
+a "game board" section (<div>?), no mobile-responsiveness required.
+
+todo   user can enter their name & receive a greeting (guest mode too if no name)
+guests get a random name
+a score + leaderboard sections: see your scores and top scores
+any other user info? date/time, IP, broswer, ...?
+hardcode some in...use sessoinStorage...cheatMode() in console?
+a BS5 modal
+game play
+guest or username
+play: start, reset, (hint?)
+a clear ending: win, lose, score
+a footer
+links to this game's REPO, your GitHub -->
+
+  <div id="game" class="container min-vh-100 d-flex flex-column py-3">
+    <div class="row">
+      <div class="col-md-10 offset-md-1">
+        <h1>Welcome to my web game</h1>
+        <label for="playerName">Enter your name</label>
+        <input id="playerName">
+        <p id="greetPlayer"></p>
+      </div>
+    </div>
+    <div class="row flex-grow-1">
+      <div class="col-md-10 offset-md mx-auto">
+        <div id="gameBoard" class="border rounded w-100 h-75">
+          
+          <div id="gamePiece" style="height:30px; width:30px">🍅</div>
+          
+          <div id="winGame" class="float-end"><p></p></div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- jquery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+  <!-- jquery UI  -->
+  <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.min.js"
+    integrity="sha256-mblSWfbYzaq/f+4akyMhE6XELCou4jbkgPv+JQPER2M=" crossorigin="anonymous"></script>
+
+  <!-- Custom JS -->
+  <script src="../assets/js/main.js"></script>
+</body>
+
+</html>
