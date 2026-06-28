@@ -4,114 +4,176 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>web game!</title>
+  <title>kbd s|cut game</title>
 
-  <!-- Normalize -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-
-  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom CSS -->
   <link rel="stylesheet" href="assets/css/style.css">
-
 </head>
 
-<body>
-
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<body data-page="full">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary border-bottom border-dark-subtle">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="index.html">
         <i class="bi bi-keyboard me-1 p-2 border rounded-circle"></i>
-        kbd s|cut game</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        kbd s|cut game
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">concept</a>
+            <a class="nav-link" href="concept.html">concept</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">full game</a>
+            <a class="nav-link active" aria-current="page" href="index.html">full game</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="pages/drop.html">drop game</a>
           </li>
         </ul>
-
       </div>
     </div>
   </nav>
 
-  <!-- 
-
-todo   user can enter their name & receive a greeting (guest mode too if no name)
-guests get a random name
-a score + leaderboard sections: see your scores and top scores
-any other user info? date/time, IP, broswer, ...?
-hardcode some in...use sessoinStorage...cheatMode() in console?
-a BS5 modal
-game play
-guest or username
-todo play: start, reset, (hint?)
-todo a clear ending: win, lose, score
-todo a footer/links to this game's REPO, your GitHub -->
-
-  <div id="game" class="container min-vh-100 d-flex flex-column py-3">
-    <div id="gameControls" class="row">
-      <div class="col-md-10 offset-md-1">
-        <h1>Welcome to my web game</h1>
-        <label for="playerName">Enter your name</label>
-        <input id="playerName">
-        <p id="greetPlayer"></p>
-        <span id="gameScore">Score: ___</span>
-      </div>
-    </div>
-    <div id="gameBoardRow" class="row flex-grow-1 border rounded">
-
-      <div class="col-sm-6">
-        <div id="gameChoices" class="w-100 h-75">
-
-          <button id="choiceBtn" class="btn btn-secondary">
-            <kbd>option + shift + f</kbd>
-          </button>
-
+  <main class="container py-3 game-shell">
+    <section class="instruction-bar mb-3">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div>
+          <p class="eyebrow mb-1">Shortcut trainer</p>
+          <p class="mb-0 text-muted">Level 1 starts with 6 pairs. Clear it to unlock Level 2 automatically.</p>
+        </div>
+        <div class="instruction-controls d-flex flex-wrap gap-2 align-items-center">
+          <label class="visually-hidden" for="playerName">Player name</label>
+          <input id="playerName" class="form-control" placeholder="Guest" aria-label="Player name">
+          <p id="greetPlayer" class="mb-0 small text-muted"></p>
         </div>
       </div>
-      <div class="col-sm-6">
-        <div id="gameAnswers" class="w-100 h-75">
+    </section>
 
-          <button id="answerBtn" class="btn btn-secondary">
-            vsCode: format code
-          </button> 
-
-
+    <section class="status-strip mb-3">
+      <div class="row g-2 g-lg-3 align-items-center">
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="score-chip h-100"><span class="score-label">Score</span><strong id="gameScore">0</strong></div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="score-chip h-100"><span class="score-label">Correct</span><strong id="correctCount">0</strong></div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="score-chip h-100"><span class="score-label">Mistakes</span><strong id="mistakeCount">0</strong></div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="score-chip h-100"><span class="score-label">Streak</span><strong id="streakCount">0</strong></div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="score-chip h-100"><span class="score-label">Level</span><strong id="levelCount">1</strong></div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="score-chip h-100"><span class="score-label">Mode</span><strong id="modeLabel">L1</strong></div>
         </div>
       </div>
+      <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
+        <button id="startGameBtn" class="btn btn-primary btn-sm">Start game</button>
+        <button id="resetGameBtn" class="btn btn-outline-secondary btn-sm">Reset</button>
+        <button id="hintBtn" class="btn btn-outline-warning btn-sm">Hint</button>
+        <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#leaderboardModal">Leaderboard</button>
+        <div class="progress flex-grow-1" role="progressbar" aria-label="Game progress">
+          <div id="progressBar" class="progress-bar bg-success" style="width: 0%">0%</div>
+        </div>
+      </div>
+    </section>
 
+    <section class="row g-3 align-items-stretch">
+      <div class="col-12">
+        <div class="game-board rounded-4 shadow-sm p-3 h-100">
+          <div class="d-flex flex-wrap justify-content-between gap-2 align-items-center mb-3">
+            <div>
+              <h2 class="h4 mb-1">Match board</h2>
+              <p class="text-muted mb-0">Choose one shortcut card and one action card.</p>
+            </div>
+            <span id="roundStatus" class="badge text-bg-light text-dark border">Waiting to start</span>
+          </div>
 
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="board-column">
+                <div class="board-column-header">
+                  <span>Shortcuts</span>
+                </div>
+                <div id="shortcutBoard" class="board-grid"></div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="board-column">
+                <div class="board-column-header">
+                  <span>Actions</span>
+                </div>
+                <div id="actionBoard" class="board-grid"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 p-3 rounded-4 bg-light border">
+            <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between">
+              <div>
+                <h3 class="h6 mb-1">Current selection</h3>
+                <p id="selectionText" class="mb-0 text-muted">Pick a shortcut tile, then pick an action tile.</p>
+              </div>
+              <div class="small text-muted">Built for quick reps, not perfect memory.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-top py-3 bg-light">
+    <div class="container d-flex flex-wrap justify-content-between gap-2 small">
+      <span>Full shortcut matching game</span>
+      <div class="d-flex gap-3 flex-wrap">
+        <a href="concept.html">Concept</a>
+        <a href="https://github.com/barrycumbie/bravo-webgame" target="_blank" rel="noreferrer">Repo</a>
+        <a href="https://github.com/barrycumbie" target="_blank" rel="noreferrer">GitHub profile</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal fade" id="gameModal" tabindex="-1" aria-labelledby="gameModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="gameModalLabel" class="modal-title fs-5">Round complete</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="modalSummary" class="mb-0"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep practicing</button>
+          <button id="modalPlayAgainBtn" type="button" class="btn btn-primary">Play again</button>
+        </div>
+      </div>
     </div>
   </div>
 
+  <div class="modal fade" id="leaderboardModal" tabindex="-1" aria-labelledby="leaderboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content game-modal">
+        <div class="modal-header border-secondary-subtle">
+          <h2 id="leaderboardModalLabel" class="modal-title fs-5">Leaderboard</h2>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ol id="leaderboardList" class="leaderboard list-group list-group-numbered mb-0"></ol>
+        </div>
+      </div>
+    </div>
   </div>
 
-  </div>
-  </div>
-
-  <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- jquery -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
-  <!-- jquery UI  -->
-  <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.min.js"
-    integrity="sha256-mblSWfbYzaq/f+4akyMhE6XELCou4jbkgPv+JQPER2M=" crossorigin="anonymous"></script>
-
-  <!-- Custom JS -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPbvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.min.js" integrity="sha256-mblSWfbYzaq/f+4akyMhE6XELCou4jbkgPv+JQPER2M=" crossorigin="anonymous"></script>
   <script src="assets/js/main.js"></script>
 </body>
 

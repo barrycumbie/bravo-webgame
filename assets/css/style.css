@@ -1,18 +1,368 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
 
-#winGame {
-  height: 50px;
-  width: 50px;
-  background-color: green;
-  /* position: absolute;
-  right: 0px;
-  bottom: 0px; */
-  /* float: right;  */
-  /* z-index: -100; */
+:root {
+  --bg-page: #0f172a;
+  --bg-panel: rgba(15, 23, 42, 0.84);
+  --bg-panel-strong: rgba(30, 41, 59, 0.94);
+  --border-soft: rgba(148, 163, 184, 0.18);
+  --text-main: #f8fafc;
+  --text-soft: #94a3b8;
+  --accent: #7dd3fc;
+  --accent-2: #fbbf24;
+  --good: #34d399;
+  --bad: #fb7185;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(125, 211, 252, 0.22), transparent 30%),
+    radial-gradient(circle at top right, rgba(251, 191, 36, 0.18), transparent 24%),
+    linear-gradient(180deg, #0f172a 0%, #111827 48%, #070b14 100%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body[data-page="full"] {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.game-shell {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.site-nav {
+  background: rgba(15, 23, 42, 0.92);
+  border-bottom: 1px solid var(--border-soft);
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.28);
+}
+
+.brand-mark {
+  align-items: center;
+  background: linear-gradient(135deg, rgba(125, 211, 252, 0.25), rgba(251, 191, 36, 0.2));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  display: inline-flex;
+  height: 2.25rem;
+  justify-content: center;
+  width: 2.25rem;
+}
+
+.hero-panel,
+.hero-card,
+.panel-card,
+.player-card,
+.instruction-bar,
+.status-strip,
+.status-panel,
+.game-board {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-soft);
+  border-radius: 1.5rem;
+  box-shadow: 0 18px 50px rgba(2, 6, 23, 0.35);
+}
+
+.hero-panel,
+.panel-card,
+.player-card,
+.instruction-bar,
+.status-strip,
+.status-panel,
+.game-board {
+  backdrop-filter: blur(18px);
+}
+
+.instruction-bar {
+  padding: 0.8rem 1rem;
+}
+
+.instruction-controls #playerName {
+  max-width: 11rem;
+}
+
+.level-select {
+  max-width: 14rem;
+}
+
+.text-muted {
+  color: #cbd5e1 !important;
+}
+
+.text-secondary {
+  color: #94a3b8 !important;
+}
+
+.status-strip {
+  padding: 0.75rem;
+}
+
+.hero-panel {
+  padding: 2rem;
+}
+
+.hero-card,
+.panel-card,
+.player-card,
+.status-panel,
+.game-board {
+  padding: 1.25rem;
+}
+
+.eyebrow,
+.section-label,
+.board-column-header {
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.greeting {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.score-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.board-column {
+  background: var(--bg-panel-strong);
+  border: 1px solid var(--border-soft);
+  border-radius: 1.25rem;
+  min-height: 100%;
+  padding: 0.75rem;
+}
+
+.board-column-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+
+.board-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.shortcut-card {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 1rem;
+  color: var(--text-main);
+  min-height: 4.5rem;
+  padding: 0.7rem;
+  text-align: left;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+  width: 100%;
+}
+
+.shortcut-card:hover,
+.shortcut-card:focus-visible {
+  border-color: rgba(125, 211, 252, 0.6);
+  box-shadow: 0 0 0 0.2rem rgba(125, 211, 252, 0.15);
+  transform: translateY(-2px);
+}
+
+.shortcut-card.is-selected {
+  border-color: rgba(251, 191, 36, 0.8);
+  box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.14);
+}
+
+.shortcut-card.is-matched {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.3), rgba(15, 23, 42, 0.95));
+  border-color: rgba(52, 211, 153, 0.8);
+}
+
+.shortcut-card.is-fading-out {
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.shortcut-card.is-fading-in {
+  animation: cardFadeIn 260ms ease;
+}
+
+.shortcut-card.is-mismatch {
+  border-color: rgba(251, 113, 133, 0.85);
+}
+
+.card-kicker {
+  color: var(--text-soft);
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+}
+
+.card-text {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.status-pill {
+  background: rgba(125, 211, 252, 0.12);
+  border: 1px solid rgba(125, 211, 252, 0.28);
+  border-radius: 999px;
+  color: var(--accent);
+  display: inline-flex;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.45rem 0.9rem;
+}
+
+.score-chip {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-soft);
+  border-radius: 1rem;
+  padding: 0.85rem;
+}
+
+.score-label {
+  color: var(--text-soft);
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+}
+
+.score-chip strong {
+  font-size: 1.5rem;
+}
+
+.score-list li,
+.leaderboard .list-group-item {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-soft);
+  border-radius: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.65rem;
+  padding: 0.75rem 0.9rem;
+}
+
+.mini-info {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-soft);
+  border-radius: 0.9rem;
+  color: var(--text-soft);
+  display: flex;
+  gap: 0.65rem;
+  padding: 0.8rem 0.9rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border-soft);
+  color: var(--text-soft);
+}
+
+.site-footer a {
+  color: var(--text-main);
+}
+
+.game-modal {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.98));
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+}
+
+.modal-summary li {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-soft);
+  border-radius: 0.8rem;
+  margin-bottom: 0.75rem;
+  padding: 0.7rem 0.9rem;
 }
 
 .ui-state-highlight {
+  background-color: rgba(125, 211, 252, 0.18);
+}
 
-  background-color: blue; 
+.hidden-board {
+  opacity: 0.72;
+}
 
+.game-board {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.game-board .row {
+  flex: 1;
+  min-height: 0;
+}
+
+.board-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.board-column .board-grid {
+  flex: 1;
+  overflow: visible;
+  padding-right: 0.2rem;
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 991.98px) {
+  body[data-page="full"] {
+    overflow: auto;
+  }
+
+  .game-shell {
+    max-height: none;
+  }
+
+  .hero-panel {
+    padding: 1.25rem;
+  }
+
+  .score-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .board-column {
+    padding: 0.6rem;
+  }
+
+  .board-column-header {
+    margin-bottom: 0.5rem;
+  }
+
+  .shortcut-card {
+    min-height: 4rem;
+    padding: 0.6rem;
+  }
+
+  .card-text {
+    font-size: 0.82rem;
+  }
 }
